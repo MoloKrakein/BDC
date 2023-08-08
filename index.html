@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="index.css" />
+		<script src="jquery-3.7.0.min.js"></script>
+	</head>
+	<body>
+		<main>
+			<section class="fv">
+				
+				<div class="fv-movie pc-fv-movie v-pc"
+					><video preload="auto" muted="" playsinline="" autoplay="" id="pc-fv-movie1"
+						><source src="fv_movie1.webm" type="video/webm" style="opacity: 1" /></video
+					><video preload="auto" muted="" playsinline="" loop="" id="pc-fv-movie2"
+						><source src="fv_movie2.webm" type="video/webm" style="opacity: 0" /></video
+				></div>
+			</section>
+		</main>
+		<script>
+			function resizeMovie(target, el) {
+				// from the original website
+				const w = $(target).width();
+				const h = $(target).height();
+				let o;
+				let s;
+				if (w / (16 / 9) < h) {
+					o = Math.ceil(h * (16 / 9));
+					$(el)
+						.innerWidth(o)
+						.innerHeight(h)
+						.css({
+							left: (w - o) / 2,
+							top: 0,
+						});
+				} else {
+					s = Math.ceil(w / (16 / 9));
+					$(el)
+						.innerWidth(w)
+						.innerHeight(s)
+						.css({
+							left: 0,
+							top: (h - s) / 2,
+						});
+				}
+			}
+
+			setInterval(() => {
+				resizeMovie('.pc-fv-movie', '#pc-fv-movie1');
+				resizeMovie('.pc-fv-movie', '#pc-fv-movie2');
+			}, 1000);
+
+			const movie1 = $('#pc-fv-movie1');
+			const movie2 = $('#pc-fv-movie2');
+			movie1.on('ended', function () {
+				movie1.css({ opacity: 0 });
+				movie2.css({ opacity: 1 });
+				movie2.get(0).play();
+			});
+			movie1.css({ opacity: 1 });
+		</script>
+	</body>
+</html>
